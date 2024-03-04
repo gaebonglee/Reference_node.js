@@ -1,0 +1,80 @@
+
+[실습] router 모듈화
+
+ router 모듈화 파일 구성
+• app.js
+• routes 폴더
+ - index.js
+ - user.js
+
+ - index.js
+const express = require("express");
+// router 객체 생성
+const router = express.Router();
+// 페이지 라우트
+router.get("/", function (request, response) {
+response.send("<h1>Index Page</h1>");
+});
+// 모듈화
+module.exports = router;
+
+
+ - user.js
+const express = require("express");
+// router 객체 생성
+const router = express.Router();
+// 페이지 라우트
+router.get("/", function (request, response) {
+response.send("<h1>User Page</h1>");
+});
+// 모듈화
+module.exports = router;
+
+app.js
+
+// 모듈 추출 및 서버 생성
+const express = require('express');
+const app = express();
+// 라우터 연결
+const indexRouter = require("./routes");
+const userRouter = require("./routes/user");
+// 라우터 설정
+app.use("/", indexRouter);
+app.use("/user", userRouter);
+// 서버 실행
+app.listen(3000, function () {
+console.log("Server Running at http://127.0.0.1:3000");
+});
+
+-------------------------
+app.js
+
+// 모듈 추출 및 서버 생성
+const express = require('express');
+const app = express();
+// 라우터 설정
+app.get('/page/:id', function(request, response){
+let name = request.params.id;
+// 응답
+response.send('<h1>' + name + ' Page</h1>');
+});
+// 서버 실행
+app.listen(3000, function () {
+console.log("Server Running at http://127.0.0.1:3000");
+});
+
+>> http://127.0.0.1:3000/page/2024에 접속 시 '2024 Page'확인 가능
+
+ 라우터 파라미터 사용 시 주의점
+• 일반 라우터보다 뒤에 위치해야 함
+ router.get("/:id", function (request, response) {
+console.log(“항상 여기만 실행됩니다.”);
+});
+router.get("/like", function (request, response) {
+console.log("실행되지 않습니다.");
+});
+
+• 이유
+- 라우터 파라미터는 와일드카드 역할을 함(전체 선택자)
+- 라우터는 작성된 순서대로 요청을 처리하므로, 전체 선택자는
+반드시 가장 마지막에 위치해야 함
