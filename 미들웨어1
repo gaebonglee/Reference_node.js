@@ -1,0 +1,126 @@
+body-parser 미들웨어
+
+
+ 프로젝트 구성
+• app.js
+• public 폴더
+- login.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login Page</title>
+</head>
+<body>
+<h1>POST 방식으로 데이터 전달하기</h1>
+<hr />
+<form method="post">
+ID : <input type="text" name="id" /><br />
+PW : <input type="password" name="password" /><br />
+<input type="submit" />
+</form>
+</body>
+</html>
+
+------------------------------------------------------
+//모듈 추출 및 서버 생성
+const express = require("express");
+const app = express();
+// public 폴더를 웹 서버의 루트 경로로 접근할 수 있도록 지정
+app.use(express.static(__dirname + "/public"));
+// application/x-www-form-urlencoded 방식 파싱
+app.use(express.urlencoded({ extended: false }));
+app.use(function (request, response, next) {
+let paramId = request.body.id;
+let paramPw = request.body.password;
+response.send("<h1>ID : " + paramId + "<br>PW : " + paramPw + "</h1>");
+});
+// 서버 실행
+app.listen(3000, function () {
+console.log("Server Running at http://127.0.0.1:3000");
+});
+
+>>실행결과
+: 127.0.0.1:3000/login.html 접속하여 아이디와 패스워드 입력 후 제출버튼을 누르면 결과값 확인
+
+//login.html내용은 동일하고, app.js내용만 변경하기
+
+//모듈 추출 및 서버 생성
+const express = require("express");
+const app = express();
+// public 폴더를 웹 서버의 루트 경로로 접근할 수 있도록 지정
+app.use(express.static(__dirname + "/public"));
+// application/x-www-form-urlencoded 방식 파싱
+app.use(express.urlencoded({ extended: false }));
+app.get("/", function (request, response) {
+  response.redirect("login.html");
+});
+app.post("/login.html", function (request, response) {
+  let paramId = request.body.id;
+  let paramPw = request.body.password;
+  response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+  response.write("<h1>로그인 페이지에서 응답한 결과</h1>");
+  response.write("<hr>");
+  response.write("<p>ID : " + paramId + "</p>");
+  response.write("<p>PW : " + paramPw + "</p>");
+  response.send();
+});
+// 서버 실행
+app.listen(3000, function () {
+  console.log("Server Running at http://127.0.0.1:3000");
+});
+
+
+>>실행결과
+: 127.0.0.1:3000/login.html 접속하여 아이디와 패스워드 입력 후 제출버튼을 누르면 결과값 확인
+
+------------------------------------------------------
+
+join.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Join Page</title>
+  </head>
+  <body>
+    <h1>회원가입 페이지</h1>
+    <hr />
+    <form method="post">
+      이름 : <input type="text" name="name" /><br />
+      주소 : <input type="text" name="address" /><br />
+      <input type="submit" />
+    </form>
+  </body>
+</html>
+
+
+app.js
+
+//모듈 추출 및 서버 생성
+const express = require("express");
+const app = express();
+// public 폴더를 웹 서버의 루트 경로로 접근할 수 있도록 지정
+app.use(express.static(__dirname + "/public"));
+// application/x-www-form-urlencoded 방식 파싱
+app.use(express.urlencoded({ extended: false }));
+app.get("/", function (request, response) {
+  response.redirect("login.html");
+});
+app.post("/join.html", function (request, response) {
+  let paramName = request.body.name;
+  let paramAddr = request.body.address;
+  response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+  response.write("<h1>회원가입 페이지에서 응답한 결과</h1>");
+  response.write("<hr>");
+  response.write("<p>ID : " + paramName + "</p>");
+  response.write("<p>PW : " + paramAddr + "</p>");
+  response.send();
+});
+// 서버 실행
+app.listen(3000, function () {
+  console.log("Server Running at http://127.0.0.1:3000");
+});
+
+http://127.0.0.1:3000/join.html 접속 후 입력한 뒤 제출버튼 누르면 페이지 확인 가능
+
+---------------------------------------------
