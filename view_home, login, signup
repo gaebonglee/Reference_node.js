@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<body>
+    <h1 style="text-align:center;">Welcome to the Home page</h1>
+</body>
+</html>
+
+------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Login</h2>
+      <form action="/login" method="post">
+        <div class="form_group">
+          <label for="name">Name : </label>
+          <input
+            type="text"
+            id="username"
+            name="user_name"
+            placeholder="Enter your name"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form_group">
+          <label for="password">password : </label>
+          <input
+            type="password"
+            id="password"
+            name="user_password"
+            placeholder="Password"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <button type="submit" class="submit_btn">Login</button>
+      </form>
+      <p>Don't have an account?<a href="/signup">Signup</a></p>
+    </div>
+  </body>
+</html>
+
+------------------------------------------------------------------------------------------
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Sign Up</h2>
+      <form action="/signup" method="post">
+        <div class="form_group">
+          <label for="name">Name : </label>
+          <input
+            type="text"                      
+            id="name"
+            name="user_name"
+            placeholder="Enter your name"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form_group">
+          <label for="password">password : </label>
+          <input
+            type="password"
+            id="password"
+            name="user_password"
+            placeholder="Password"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <button type="submit" class="submit_btn">Sign Up</button>
+      </form>
+    </div>
+  </body>
+</html>
