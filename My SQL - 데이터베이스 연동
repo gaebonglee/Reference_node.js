@@ -1,0 +1,158 @@
+My SQL  사용자 계정 업그레이드 
+1) MySQL에 루트로 로그인
+2) 다음 쿼리를 실행하여 사용자 계정을 업그레이드
+>> ALTER USER '사용자이름'@'호스트' IDENTIFIED WITH mysql_native_password BY '비밀번호';
+
+◆데이터베이스 연동
+
+MySQL 모듈
+$ npm install mysql
+
+//모듈 추출 
+const mysql = require('mysql');
+
+// connection 객체 생성 : createConnection() 메서드로 생성
+const connection = mysql.createConnection({
+user : 'root',
+password : '비밀번호',
+database : '데이터베이스 이름',
+port: 3306,
+});
+
+// 데이터베이스 연결
+connection.connect();
+// 서버 실행
+app.listen(3000, function () {
+console.log("Server Running at http://127.0.0.1:3000");
+});
+
+----------------------------
+❖ query() 메서드의 콜백 함수
+
+// 데이터베이스 쿼리 사용
+connection.query(‘SELECT * FROM products’, function(error, result, fields){
+});
+
+• 쿼리 문장을 실행한 결과가 result 변수에 입력
+• 쿼리 문장에 오류가 있을 경우 error 변수에 관련 정보가 입력
+
+* 데이터베이스에서 데이터 가져오기
+// 생략
+// 데이터베이스 연결
+connection.connect();
+// 데이터베이스 쿼리 사용
+connection.query("SELECT * FROM Book", function (error, result, fields) {
+if (error) {
+console.log("쿼리 문장에 오류가 있습니다.");
+console.log(error);
+} else {
+console.log(result);
+}
+});
+// 서버 실행
+app.listen(3000, function () {
+console.log("Server Running at http://127.0.0.1:3000");
+});
+
+>> My SQL에 있는 데이터 터미널로 확인 가능 
+
+---------------------------------------------------------
+
+❖ ? 토큰
+• 데이터를 입력할 때는 ? 토큰을 사용
+• 쿼리 실행 시, 자동으로 ? 토큰 안에 배열의 요소가 순서대로 입력
+connection.query('INSERT INTO Book(bookid, bookname, publisher, price)
+VALUES (?,?,?,?)',
+['ID값', 'Name값', 'Publisher값', 'Price값'],
+function(error, result, fields){
+}
+);
+
+[실습] 데이터 추가하기
+
+// 생략
+// 데이터베이스 연결
+connection.connect();
+// 데이터베이스 쿼리 사용
+connection.query(
+"INSERT INTO Book(bookid, bookname, publisher, price) VALUES(?,?,?,?)",
+[111, "Node.js 교과서", "길벗", 42000],
+function (error, result, fields) {
+if (error) {
+console.log("쿼리 문장에 오류가 있습니다.");
+console.log(error);
+} else {
+console.log("입력이 완료되었습니다.");
+}
+}
+);
+// 서버 실행
+app.listen(3000, function () {
+console.log("Server Running at http://127.0.0.1:3000");
+});
+
+>> My SQL에 select*from book 입력 후 확인하면 [111, "Node.js 교과서", "길벗", 42000] 내용추가 확인 가능 
+
+------------------------------------------------------------------
+[실습] 데이터 수정하기
+// 생략
+// 데이터베이스 연결
+connection.connect();
+// 데이터베이스 쿼리 사용
+connection.query
+(
+
+"UPDATE Book SET price=? WHERE bookid=?",
+[50000, 111]
+,
+
+function (error, result, fields) {
+if (error) {
+console.log("쿼리 문장에 오류가 있습니다.");
+console.log(error);
+} else {
+console.log("수정이 완료되었습니다.");
+}
+}
+);
+// 서버 실행
+app.listen(3000, function () {
+console.log("Server Running at http://127.0.0.1:3000");
+});
+
+>> My SQL에 select*from book 입력 후 확인하면 
+[111, "Node.js 교과서", "길벗", 42000] > 가격 50000원으로 변경 확인 가능
+
+-----------------------------------------------------
+[실습] 데이터 삭제하기
+
+// 생략
+// 데이터베이스 연결
+connection.connect();
+// 데이터베이스 쿼리 사용
+connection.query
+(
+
+"DELETE FROM Book WHERE bookid=?",
+[111]
+,
+
+function (error, result, fields) {
+if (error) {
+console.log("쿼리 문장에 오류가 있습니다.");
+console.log(error);
+} else {
+console.log("삭제가 완료되었습니다.");
+}
+}
+);
+// 서버 실행
+app.listen(3000, function () {
+console.log("Server Running at http://127.0.0.1:3000");
+});
+
+>> 111번 등록했던 상품 삭제 확인가능
+
+------------------------------------------------------------
+
+
